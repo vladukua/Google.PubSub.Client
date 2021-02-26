@@ -1,0 +1,37 @@
+@model Google.PubSub.Client.Web.Controllers.SubscriptionCreateModel
+
+@{
+    ViewBag.Title = "Create new Subscription";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-controller="Project" asp-action="List">Projects</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-controller="Topic" asp-action="List" asp-route-projectId="@Model.ProjectId">Topics</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a asp-controller="Topic" asp-action="Detail" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName">Topic Details</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Create new Subscription</li>
+    </ol>
+</nav>
+
+<div class="text-center">
+    <h2 class="display-4">Create new Subscription to the Topic</h2>
+</div>
+
+<div>
+    <form method="post" enctype="multipart/form-data" asp-controller="Subscription" asp-action="Create">
+        <div class="form-group">
+            <label for="topicName">Subscription name</label>
+            <input type="text" class="form-control" id="subscriptionName" name="subscriptionName" placeholder="Enter subscription name">
+        </div>
+        <input type="hidden" value="@Model.ProjectId" id="projectId" name="projectId"/>
+        <input type="hidden" value="@Model.TopicName" id="topicName" name="topicName"/>
+
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
