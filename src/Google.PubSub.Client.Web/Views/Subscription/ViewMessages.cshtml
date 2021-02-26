@@ -1,7 +1,7 @@
 @model Google.PubSub.Client.Web.Controllers.ViewMessageModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "View Messages";
     var index = 0;
 }
 
@@ -19,6 +19,10 @@
         <li class="breadcrumb-item active" aria-current="page">View Messages</li>
     </ol>
 </nav>
+
+<div>
+    <a asp-controller="Subscription" asp-action="ViewMessages" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName" asp-route-subscriptionName="@Model.SubscriptionName" class="btn btn-primary">Pull</a>
+</div>
 
 <div class="text-center">
     <h2 class="display-4">Messages</h2>

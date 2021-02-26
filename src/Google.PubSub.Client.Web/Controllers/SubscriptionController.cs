@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -72,31 +73,39 @@ namespace Google.PubSub.Client.Web.Controllers
         public async Task<ActionResult> ViewMessages(string projectId, string topicName, string subscriptionName,
             CancellationToken token)
         {
+            var model = new ViewMessageModel
+            {
+                ProjectId = projectId,
+                TopicName = topicName,
+                SubscriptionName = subscriptionName,
+            };
             var client = await new SubscriberServiceApiClientBuilder
             {
                 Endpoint = _pubSubConfig.EmulatorHost,
                 ChannelCredentials = ChannelCredentials.Insecure
             }.BuildAsync(token);
 
-            var pullResponse = await client.PullAsync(subscriptionName, false, int.MaxValue, token);
-            var model = new ViewMessageModel
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+
+            try
             {
-                ProjectId = projectId,
-                TopicName = topicName,
-                SubscriptionName = subscriptionName
-            };
-            model.Messages =
-                pullResponse.ReceivedMessages.Select(m => new ViewMessageModel.Message
+                var pullResponse = await client.PullAsync(subscriptionName, false, int.MaxValue, cts.Token);
+                model.Messages = pullResponse.ReceivedMessages.Select(m => new ViewMessageModel.Message
                 {
                     MessageId = m.Message.MessageId,
                     AckId = m.AckId,
                     Data = m.Message.Data.ToStringUtf8()
                 }).ToList();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
 
             return View(model);
         }
 
-        [HttpGet("project/subscription/message/ack")]
+        [HttpPost("project/subscription/message/ack")]
         public async Task<ActionResult> AcknowledgeMessage(string projectId, string topicName, string subscriptionName,
             string ackId, CancellationToken token)
         {
@@ -120,7 +129,7 @@ namespace Google.PubSub.Client.Web.Controllers
 
         public string SubscriptionName { get; set; }
 
-        public IReadOnlyCollection<Message> Messages { get; set; }
+        public IReadOnlyCollection<Message> Messages { get; set; } = Array.Empty<Message>();
 
         public class Message
         {

@@ -11,8 +11,9 @@ namespace Google.PubSub.Client.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddSession();
             services.AddControllersWithViews();
-
             services.AddSingleton<PubSubConfig>();
         }
 
@@ -29,6 +30,7 @@ namespace Google.PubSub.Client.Web
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
