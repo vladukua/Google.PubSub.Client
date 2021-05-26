@@ -27,13 +27,13 @@ namespace Google.PubSub.Client.Web.Controllers
         }
 
         [HttpGet("project/topics")]
-        public async Task<IActionResult> List(string projectId, CancellationToken token)
+        public async Task<IActionResult> List(string projectId, CancellationToken cancellationToken)
         {
             var client = await new PublisherServiceApiClientBuilder
             {
                 Endpoint = _pubSubConfig.EmulatorHost,
                 ChannelCredentials = ChannelCredentials.Insecure
-            }.BuildAsync(token);
+            }.BuildAsync(cancellationToken);
 
             var projectName = ProjectName.FromProject(projectId);
 
@@ -78,13 +78,13 @@ namespace Google.PubSub.Client.Web.Controllers
 
         [HttpPost("project/topic/publish")]
         public async Task<ActionResult> PublishMessage(string projectId, string topicName, string message,
-            CancellationToken token)
+            CancellationToken cancellationToken)
         {
             var client = await new PublisherServiceApiClientBuilder
             {
                 Endpoint = _pubSubConfig.EmulatorHost,
                 ChannelCredentials = ChannelCredentials.Insecure
-            }.BuildAsync(token);
+            }.BuildAsync(cancellationToken);
 
             var pubSubMessage = new PubsubMessage
             {
@@ -92,36 +92,36 @@ namespace Google.PubSub.Client.Web.Controllers
                 Data = ByteString.CopyFromUtf8(message)
             };
             
-            await client.PublishAsync(topicName, new[] {pubSubMessage}, token);
+            await client.PublishAsync(topicName, new[] {pubSubMessage}, cancellationToken);
             
             return RedirectToAction("Detail", new {projectId, topicName});
         }
 
         [HttpPost("project/topic/create")]
-        public async Task<ActionResult> Create(string projectId, string topicName, CancellationToken token)
+        public async Task<ActionResult> Create(string projectId, string topicName, CancellationToken cancellationToken)
         {
             var client = await new PublisherServiceApiClientBuilder
             {
                 Endpoint = _pubSubConfig.EmulatorHost,
                 ChannelCredentials = ChannelCredentials.Insecure
-            }.BuildAsync(token);
+            }.BuildAsync(cancellationToken);
 
             var topic = new TopicName(projectId, topicName);
-            await client.CreateTopicAsync(topic, token);
+            await client.CreateTopicAsync(topic, cancellationToken);
 
             return RedirectToAction("List", new {projectId});
         }
 
         [HttpPost("project/topic/delete")]
-        public async Task<ActionResult> Delete(string projectId, string topicName, CancellationToken token)
+        public async Task<ActionResult> Delete(string projectId, string topicName, CancellationToken cancellationToken)
         {
             var client = await new PublisherServiceApiClientBuilder
             {
                 Endpoint = _pubSubConfig.EmulatorHost,
                 ChannelCredentials = ChannelCredentials.Insecure
-            }.BuildAsync(token);
+            }.BuildAsync(cancellationToken);
 
-            await client.DeleteTopicAsync(topicName, token);
+            await client.DeleteTopicAsync(topicName, cancellationToken);
 
             return RedirectToAction("List", new {projectId});
         }

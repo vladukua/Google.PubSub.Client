@@ -26,8 +26,8 @@
 <div>
     <form method="post" enctype="multipart/form-data" asp-controller="Subscription" asp-action="Create">
         <div class="form-group">
-            <label for="topicName">Subscription name</label>
-            <input type="text" class="form-control" id="subscriptionName" name="subscriptionName" placeholder="Enter subscription name">
+            <label for="topicName">Subscription Id</label>
+            <input type="text" class="form-control" id="subscriptionId" name="subscriptionId" placeholder="Enter subscription name">
         </div>
         <input type="hidden" value="@Model.ProjectId" id="projectId" name="projectId"/>
         <input type="hidden" value="@Model.TopicName" id="topicName" name="topicName"/>
