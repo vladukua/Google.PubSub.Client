@@ -29,7 +29,7 @@
                     <th scope="row">@index</th>
                     <td>@subscription</td>
                     <td>
-                        <a asp-controller="Subscription" asp-action="ViewMessages" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName" asp-route-subscriptionName="@subscription" class="btn btn-outline-primary btn-sm">View</a>
+                        <a asp-controller="Subscription" asp-action="ViewMessages" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName" asp-route-subscriptionName="@subscription" class="btn btn-outline-primary btn-sm">Details</a>
                     </td>
                     <td>
                         <form method="post" enctype="multipart/form-data" asp-controller="Subscription" asp-action="PurgeMessages">

@@ -1,3 +1,4 @@
+@using Newtonsoft.Json
 @model Google.PubSub.Client.Web.Controllers.ViewMessageModel
 
 @{
@@ -16,16 +17,24 @@
         <li class="breadcrumb-item">
             <a asp-controller="Topic" asp-action="Detail" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName">Topic Details</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">View Messages</li>
+        <li class="breadcrumb-item active" aria-current="page">Subscription Details</li>
     </ol>
 </nav>
 
+<div class="text-center">
+    <h2 class="display-4">Subscription Details</h2>
+</div>
+
 <div>
-    <a asp-controller="Subscription" asp-action="ViewMessages" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName" asp-route-subscriptionName="@Model.SubscriptionName" class="btn btn-primary">Pull</a>
+    <pre>@JsonConvert.SerializeObject(Model.Details, Formatting.Indented)</pre>
 </div>
 
 <div class="text-center">
     <h2 class="display-4">Messages</h2>
+</div>
+
+<div>
+    <a asp-controller="Subscription" asp-action="ViewMessages" asp-route-projectId="@Model.ProjectId" asp-route-topicName="@Model.TopicName" asp-route-subscriptionName="@Model.SubscriptionName" class="btn btn-primary">Pull</a>
 </div>
 
 <div class="accordion" id="messagesAccordion">

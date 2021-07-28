@@ -29,9 +29,45 @@
             <label for="topicName">Subscription Id</label>
             <input type="text" class="form-control" id="subscriptionId" name="subscriptionId" placeholder="Enter subscription name">
         </div>
+        <div class="form-group">
+            <label for="retryPolicy">Retry Policy</label>
+            <select class="form-control" id="retryPolicy" name="retryPolicy" required>
+                <option value="immediate">Immediate</option>
+                <option value="exponentialBackoff">Exponential Backoff</option>
+            </select>
+        </div>
+        <div id="exponentialBackoffGroup">
+            <div class="form-group">
+                <label for="minBackoff">Minimum Backoff (seconds)</label>
+                <input type="number" class="form-control" id="minBackoff" name="minBackoff" min="1" max="600" value="10" />
+            </div>
+            <div class="form-group">
+                <label for="maxBackoff">Maximum Backoff (seconds)</label>
+                <input type="number" class="form-control" id="maxBackoff" name="maxBackoff" min="1" max="600" value="600" />
+            </div>
+        </div>
         <input type="hidden" value="@Model.ProjectId" id="projectId" name="projectId"/>
         <input type="hidden" value="@Model.TopicName" id="topicName" name="topicName"/>
 
         <button type="submit" class="btn btn-primary">Create</button>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            let $retryPolicy = $("#retryPolicy");
+            if ($retryPolicy.val() !== "exponentialBackoff")
+                $("#exponentialBackoffGroup").hide();
+          $retryPolicy.change(function() {
+            let val = $(this).val();
+            if(val === "exponentialBackoff") {
+                $("#exponentialBackoffGroup").show();
+            }
+            else {
+                $("#exponentialBackoffGroup").hide();
+            }
+          });
+        });
+    </script>
+}
